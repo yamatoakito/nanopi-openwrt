@@ -57,7 +57,14 @@ jobs:
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
           cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
-          echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
+          echo '
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
+          # CONFIG_V2RAY_COMPRESS_UPX is not set
+          ' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
@@ -88,7 +95,23 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           mv ../../scripts/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
-
+          
+      - name: Add Passwall
+        run: |
+          cd friendlywrt-rk3328/friendlywrt
+          echo -e '\nsrc-git lienol https://github.com/Lienol/openwrt-package' >> feeds.conf.default
+          ./scripts/feeds update -a
+          rm -rf feeds/lienol/lienol/ipt2socks
+          rm -rf feeds/lienol/lienol/shadowsocksr-libev
+          rm -rf feeds/lienol/lienol/pdnsd-alt
+          rm -rf feeds/lienol/package/verysync
+          rm -rf feeds/lienol/lienol/luci-app-verysync
+          rm -rf package/lean/luci-app-kodexplorer
+          rm -rf package/lean/luci-app-pppoe-relay
+          rm -rf package/lean/luci-app-pptp-server
+          rm -rf package/lean/luci-app-v2ray-server
+          ./scripts/feeds install -a
+          
       - name: Build FriendlyWrt
         run: |
           cd friendlywrt-rk3328
