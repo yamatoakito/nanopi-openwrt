@@ -108,7 +108,14 @@ jobs:
       - name: Clean Feeds
         run: |
           cd friendlywrt-rk3328/friendlywrt
-          wget -q -O - https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz | tar -Jx --strip 1 -f - -C /staging_dir/host/bin upx-3.96-amd64_linux/upx
+          mkdir -p staging_dir
+          cd staging_dir
+          mkdir -p host
+          cd host
+          mkdir -p bin
+          cd bin
+          wget -q -O - https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz | tar -Jx --strip 1 -f -  upx-3.96-amd64_linux/upx
+          cd ../../../
           ./scripts/feeds clean -a
                     
       - name: Build FriendlyWrt
