@@ -105,7 +105,7 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           
-      - name: Clean Feeds
+      - name: Feeds
         run: |
           cd friendlywrt-rk3328/friendlywrt
           mkdir -p staging_dir
@@ -116,7 +116,18 @@ jobs:
           cd bin
           wget -q -O - https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz | tar -Jx --strip 1 -f -  upx-3.96-amd64_linux/upx
           cd ../../../
-          ./scripts/feeds clean -a
+          ./scripts/feeds clean
+          ./scripts/feeds update -a
+          rm -rf feeds/lienol/lienol/ipt2socks
+          rm -rf feeds/lienol/lienol/shadowsocksr-libev
+          rm -rf feeds/lienol/lienol/pdnsd-alt
+          rm -rf feeds/lienol/package/verysync
+          rm -rf feeds/lienol/lienol/luci-app-verysync
+          rm -rf package/lean/luci-app-kodexplorer
+          rm -rf package/lean/luci-app-pppoe-relay
+          rm -rf package/lean/luci-app-pptp-server
+          rm -rf package/lean/luci-app-v2ray-server
+          ./scripts/feeds install -a
                     
       - name: Build FriendlyWrt
         run: |
