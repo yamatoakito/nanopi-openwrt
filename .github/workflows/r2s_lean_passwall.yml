@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lean.yml'
+      - '.github/workflows/r2s_lean_passwall.yml'
 
 
 jobs:
