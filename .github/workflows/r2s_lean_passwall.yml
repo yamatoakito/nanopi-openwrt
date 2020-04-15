@@ -141,7 +141,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
+          tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}-${{ github.run_id }}
           release_name: ${{ steps.assemble_artifact.outputs.release_tag }}
           draft: false
           prerelease: false
