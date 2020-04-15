@@ -41,7 +41,6 @@ jobs:
           rm -rf ./artifact/
           mkdir -p ./artifact/
           mv friendlywrt-rk3328/out/*img* ./artifact/
-          cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
           zip -r artifact.zip ./artifact/
           release_tag="R2S-Lean-$(date +%Y-%m-%d)"
           echo "##[set-output name=release_tag;]$release_tag"
