@@ -39,14 +39,14 @@ jobs:
           mkdir -p ./artifact/
           mv friendlywrt-rk3328/out/*img* ./artifact/
           zip -r artifact.zip ./artifact/
-          release_tag="R2S-Lean-$(date +%Y-%m-%d)"
+          release_tag="R2S-Lean-$(date +%Y-%m-%d-%h)"
           echo "##[set-output name=release_tag;]$release_tag"
           
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+           GITHUB_TOKEN: ${{secrets.st}}
         with:
           tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
           release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }}
