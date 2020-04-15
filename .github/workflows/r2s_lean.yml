@@ -57,6 +57,7 @@ jobs:
           cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
           echo '
+          CONFIG_PACKAGE_luci-app-passwall=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
