@@ -62,6 +62,9 @@ jobs:
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
+          CONFIG_PACKAGE_luci-app-hd-idle=y
+          CONFIG_PACKAGE_luci-app-minidlna=y
+          CONFIG_PACKAGE_luci-app-transmission=y
           # CONFIG_V2RAY_COMPRESS_UPX is not set
           ' >> configs/config_rk3328
           cd friendlywrt
@@ -122,14 +125,33 @@ jobs:
           gzip friendlywrt-rk3328/out/*.img
           
       - name: Assemble Artifact
+        id: assemble_artifact
         run: |
           rm -rf ./artifact/
           mkdir -p ./artifact/
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
+          zip -r artifact.zip ./artifact/
+          release_tag="R2S-Lean-$(date +%Y-%m-%d)"
+          echo "##[set-output name=release_tag;]$release_tag"
           
-      - name: Upload Artifact
-        uses: actions/upload-artifact@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          name: FriendlyWrt_NanoPi-R2S
-          path: ./artifact/
+          tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
+          release_name: ${{ steps.assemble_artifact.outputs.release_tag }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./artifact.zip
+          asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
+          asset_content_type: application/zip
