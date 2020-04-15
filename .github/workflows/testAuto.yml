@@ -1,4 +1,4 @@
-name: 测试发布
+name: 测试发布2
 
 on:
   push:
