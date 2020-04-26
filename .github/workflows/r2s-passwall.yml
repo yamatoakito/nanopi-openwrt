@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/r2s_lean_passwall.yml'
   
+
 jobs:
 
   build:
