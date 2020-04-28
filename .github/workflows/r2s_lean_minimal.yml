@@ -113,7 +113,7 @@ jobs:
           # CONFIG_PACKAGE_luci-app-sqm=y
           # CONFIG_PACKAGE_luci-app-ssr-python-pro-server=y
           # CONFIG_PACKAGE_luci-app-v2ray-server=y
-          # CONFIG_PACKAGE_luci-app-vsftpd=y
+          # CONFIG_PACKAGE_luci-app-vsftpd is not set
           # CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks=y
           # CONFIG_TARGET_ROOTFS_TARGZ=y
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
